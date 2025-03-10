@@ -36,6 +36,7 @@ export default function SprintSelector({ teamId, onSprintSelected }: { teamId: s
     });
 
     const data = await res.json();
+    console.log(data);
     fetchSprints();
   };
 
