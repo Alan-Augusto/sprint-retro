@@ -12,5 +12,23 @@ model Message {
   author    String
   content   String
   category  String // "good", "bad", "repeat"
+  sprintId  String
+  sprint    Sprint  @relation(fields: [sprintId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id       String   @id @default(uuid())
+  name     String   @unique
+  sprints  Sprint[]
+  createdAt DateTime @default(now())
+}
+
+model Sprint {
+  id        String   @id @default(uuid())
+  name      String
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  messages  Message[]
   createdAt DateTime @default(now())
 }

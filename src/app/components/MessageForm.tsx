@@ -10,13 +10,12 @@ const categories = [
   { label: "🌱 Queremos repetir", value: "repeat" },
 ];
 
-export default function MessageForm({ onNewMessage }: { onNewMessage: () => void }) {
+export default function MessageForm({ sprintId, onNewMessage }: { sprintId: string, onNewMessage: () => void }) {
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("good");
   const [author, setAuthor] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Checa se há um nome salvo no sessionStorage ao carregar a página
   useEffect(() => {
     const storedName = sessionStorage.getItem("username");
     if (!storedName) {
@@ -34,12 +33,12 @@ export default function MessageForm({ onNewMessage }: { onNewMessage: () => void
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!author) return;
+    if (!author || !sprintId) return;
 
     await fetch("/api/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ author, content, category }),
+      body: JSON.stringify({ author, content, category, sprintId }),
     });
 
     setContent("");
@@ -48,7 +47,6 @@ export default function MessageForm({ onNewMessage }: { onNewMessage: () => void
 
   return (
     <>
-      {/* Modal para inserir o nome */}
       <Dialog open={isModalOpen}>
         <DialogContent>
           <DialogHeader>
@@ -63,7 +61,6 @@ export default function MessageForm({ onNewMessage }: { onNewMessage: () => void
         </DialogContent>
       </Dialog>
 
-      {/* Formulário principal */}
       <form onSubmit={handleSubmit} className="space-y-2">
         <select value={category} onChange={(e) => setCategory(e.target.value)} className="border rounded p-2 w-full">
           {categories.map((cat) => (

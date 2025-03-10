@@ -124,3 +124,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.falling-leaves {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.button-link{
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-10%) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.leaf {
+  position: absolute;
+  top: -10%;
+  font-size: 24px;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
