@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/app/components/ui/button";
 
 interface Sprint {
@@ -11,11 +11,7 @@ export default function SprintSelector({ teamId, onSprintSelected }: { teamId: s
   const [sprints, setSprints] = useState<Sprint[]>([]);
   const [selectedSprint, setSelectedSprint] = useState("");
 
-  useEffect(() => {
-    fetchSprints();
-  }, [teamId]);
-
-  const fetchSprints = async () => {
+  const fetchSprints = useCallback(async () => {
     const res = await fetch(`/api/sprint?teamId=${teamId}`);
     const data = await res.json();
     setSprints(data);
@@ -23,7 +19,11 @@ export default function SprintSelector({ teamId, onSprintSelected }: { teamId: s
       setSelectedSprint(data[0].id);
       onSprintSelected(data[0].id);
     }
-  };
+  }, [teamId, onSprintSelected]); // Dependências corrigidas
+
+  useEffect(() => {
+    fetchSprints();
+  }, [fetchSprints]); // Agora `fetchSprints` está na lista
 
   const createSprint = async () => {
     const name = prompt("Digite o nome da nova sprint:");

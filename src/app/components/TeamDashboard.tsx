@@ -4,7 +4,6 @@ import SprintSelector from "./SprintSelector";
 import MessageForm from "./MessageForm";
 import MessageList from "./MessageList";
 import { clearUserData, setUserData } from "@/lib/utils";
-import { Button } from "./ui/button";
 import TopIcons from "./TopIcons";
 
 export default function TeamDashboard({ teamId }: { teamId: string }) {

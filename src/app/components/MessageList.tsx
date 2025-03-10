@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Message {
   id: string;
@@ -11,16 +11,16 @@ interface Message {
 export default function MessageList({ sprintId, refresh }: { sprintId: string, refresh: boolean }) {
   const [messages, setMessages] = useState<Message[]>([]);
 
-  useEffect(() => {
-    fetchMessages();
-  }, [refresh, sprintId]); // Atualiza a lista sempre que 'refresh' ou 'sprintId' mudar
-
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     if (!sprintId) return;
     const res = await fetch(`/api/messages?sprintId=${sprintId}`);
     const data = await res.json();
     setMessages(data);
-  };
+  }, [sprintId]); // Agora depende apenas de `sprintId`
+
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages, refresh]); // Agora `fetchMessages` está incluído corretamente
 
   const goodMessages = messages.filter((msg) => msg.category === "good");
   const badMessages = messages.filter((msg) => msg.category === "bad");
