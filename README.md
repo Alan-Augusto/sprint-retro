@@ -2,6 +2,8 @@
 
 > **Sprint Retro** é uma aplicação construída para facilitar a retrospectiva das sprints de um time ágil. Com ela, os membros do time podem compartilhar feedbacks sobre a sprint de forma simples, categorizada e organizada. A aplicação oferece uma maneira de registrar mensagens relacionadas a três categorias: **Bom**, **Ruim** e **Repetir**, além de permitir a criação e o gerenciamento de sprints.
 
+![Home](./assets/print.png)
+
 ## Funcionalidades
 
 ### Para o Time:
