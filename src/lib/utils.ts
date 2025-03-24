@@ -13,7 +13,7 @@ export function getUserData() {
   return null;
 }
 
-export function setUserData(data: { teamId: string; teamName: string; sprintId?: string }) {
+export function setUserData(data: { teamId: string; teamName: string | null; sprintId?: string }) {
   if (typeof window !== "undefined") {
     localStorage.setItem("userData", JSON.stringify(data));
   }
