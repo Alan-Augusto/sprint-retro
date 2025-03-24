@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import SprintSelector from "./SprintSelector";
 import MessageForm from "./MessageForm";
 import MessageList from "./MessageList";
@@ -19,7 +19,7 @@ export default function TeamDashboard({ teamId }: { teamId: string }) {
 
         if (data.error) {
           alert("Time não encontrado!");
-          clearUserData()
+          clearUserData();
           return;
         }
 
@@ -33,24 +33,22 @@ export default function TeamDashboard({ teamId }: { teamId: string }) {
     fetchTeam();
   }, [teamId]);
 
+  // Memoize a função para evitar recriações a cada render
+  const handleSprintSelected = useCallback((sprintId: string) => {
+    setSprintId(sprintId);
+    setUserData({ teamId, teamName, sprintId });
+  }, [teamId, teamName]);
+
   return (
     <main className="p-4 max-w-2xl mx-auto space-y-4">
       {teamName ? (
         <>
-          <TopIcons teamId={teamId}/>
+          <TopIcons teamId={teamId} />
           <h1 className="text-2xl font-bold">🚀 Retrospectiva - Time {teamName}</h1>
-
-          <SprintSelector
-            teamId={teamId}
-            onSprintSelected={(sprintId) => {
-              setSprintId(sprintId);
-              setUserData({ teamId, teamName, sprintId });
-            }}
-          />
-
+          <SprintSelector teamId={teamId} onSprintSelected={handleSprintSelected} />
           {sprintId && (
             <>
-              <MessageForm sprintId={sprintId} onNewMessage={() => setRefresh((prev) => !prev)} />
+              <MessageForm sprintId={sprintId} onNewMessage={() => setRefresh(prev => !prev)} />
               <MessageList sprintId={sprintId} refresh={refresh} />
             </>
           )}
@@ -61,3 +59,4 @@ export default function TeamDashboard({ teamId }: { teamId: string }) {
     </main>
   );
 }
+
